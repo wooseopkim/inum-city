@@ -1,15 +1,6 @@
-import * as core from '@actions/core';
-import { config } from 'dotenv';
-import path, { dirname } from 'path';
-import { getNumberEnv } from './src/env.js';
-import handle, { type Request } from './src/handle.js';
-
-const ci = process.env.CI === 'true';
-if (!ci) {
-	config({
-		path: path.resolve(dirname(import.meta.url), '.env.local'),
-	});
-}
+import { setFailed } from '@actions/core';
+import { getNumberEnv } from './src/env';
+import handle, { type Request } from './src/handle';
 
 const page = getNumberEnv('page');
 const size = getNumberEnv('size');
@@ -29,9 +20,9 @@ async function crawl(request?: Request) {
 
 function onError(e: unknown) {
 	if (e instanceof Error) {
-		core.setFailed(e);
+		setFailed(e);
 		return;
 	}
 	console.error('Unknown error occured:', e);
-	core.setFailed('Unknown error');
+	setFailed('Unknown error');
 }

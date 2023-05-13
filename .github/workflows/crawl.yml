@@ -15,4 +15,4 @@ jobs:
           SUPABASE_URL: https://vrpyodyxhlbljkedyeoy.supabase.co
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           PUBLIC_API_KEY: ${{ secrets.PUBLIC_API_KEY }}
-        run: npx nx run crawler:run
+        run: npx nx run crawler:start

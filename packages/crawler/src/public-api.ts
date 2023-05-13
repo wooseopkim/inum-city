@@ -1,5 +1,5 @@
-import type { Paginator } from './Paginator.js';
-import { publicApiKey } from './env.js';
+import type { Paginator } from './Paginator';
+import { publicApiKey } from './env';
 
 export type PublicApiResponse = {
 	response:

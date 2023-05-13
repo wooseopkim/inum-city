@@ -1,17 +1,10 @@
 import { createClient, type PostgrestError } from '@supabase/supabase-js';
 import sampleResponse from '../tests/sample-response.json';
-import silent from '../tests/silent.js';
-import handle from './handle.js';
+import silent from '../tests/silent';
+import handle from './handle';
 
 const originalHandle = handle;
 
-jest.mock('@actions/core', () => {
-	return {
-		getInput: (key: string) => {
-			return key;
-		},
-	};
-});
 jest.mock('@supabase/supabase-js');
 
 describe(handle, () => {

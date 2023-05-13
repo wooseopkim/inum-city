@@ -3,11 +3,11 @@
 // This enables autocomplete, go to definition, etc.
 
 import { createClient, type PostgrestError } from '@supabase/supabase-js';
-import { CustomError } from './CustomError.js';
-import { supabaseKey, supabaseUrl } from './env.js';
-import { Paginator } from './Paginator.js';
-import { isUniqueViolation } from './postgres.js';
-import { fetchAnimalList, type PublicApiResponse } from './public-api.js';
+import { CustomError } from './CustomError';
+import { supabaseKey, supabaseUrl } from './env';
+import { Paginator } from './Paginator';
+import { isUniqueViolation } from './postgres';
+import { fetchAnimalList, type PublicApiResponse } from './public-api';
 
 const jsonContentTypeHeader = /^application\/json(;.+)?/;
 
