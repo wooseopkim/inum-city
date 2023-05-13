@@ -1,0 +1,25 @@
+name: Run Supabase migrations
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'supabase/migrations/*.sql'
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+
+    env:
+      SUPABASE_ACCES_TOKEN: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      PROJECT_ID: vrpyodyxhlbljkedyeoy
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 1.0.0
+
+      - run: supabase db push --project-ref $PROJECT_ID

@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"esModuleInterop": true,
+		"isolatedModules": true,
+		"module": "esnext",
+		"moduleResolution": "nodenext",
+		"moduleDetection": "force",
+		"strict": true,
+		"target": "esnext",
+		"useDefineForClassFields": true,
+		"importsNotUsedAsValues": "error"
+	}
+}

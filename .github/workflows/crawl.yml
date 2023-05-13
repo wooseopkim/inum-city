@@ -1,0 +1,18 @@
+name: Crawl
+
+on:
+  schedule:
+    - cron: '0 0,12 * * *'
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - env:
+          SUPABASE_URL: https://vrpyodyxhlbljkedyeoy.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          PUBLIC_API_KEY: ${{ secrets.PUBLIC_API_KEY }}
+        run: npx nx run crawler:run
