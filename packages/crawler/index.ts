@@ -1,13 +1,13 @@
 import * as core from '@actions/core';
 import { config } from 'dotenv';
-import path from 'path';
+import path, { dirname } from 'path';
 import { getNumberEnv } from './src/env.js';
 import handle, { type Request } from './src/handle.js';
 
 const ci = process.env.CI === 'true';
 if (!ci) {
 	config({
-		path: path.resolve(__dirname, '.env.local'),
+		path: path.resolve(dirname(import.meta.url), '.env.local'),
 	});
 }
 
