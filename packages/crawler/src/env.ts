@@ -1,4 +1,4 @@
-import { CustomError } from './CustomError';
+import { CustomError } from './CustomError.js';
 
 export const supabaseUrl = getEnvOrThrow('SUPABASE_URL');
 export const supabaseKey = getEnvOrThrow('SUPABASE_SERVICE_ROLE_KEY');

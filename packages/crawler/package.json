@@ -1,13 +1,13 @@
 {
 	"name": "crawler",
 	"version": "0.0.1",
-	"main": "index.ts",
 	"private": "true",
+	"type": "module",
 	"scripts": {
 		"run": "tsx index.ts",
 		"test": "jest",
-		"lint": "eslint .",
-		"format:check": "prettier --check .",
+		"check": "tsc --noEmit",
+		"lint": "eslint . && prettier --check .",
 		"format": "prettier --write ."
 	},
 	"devDependencies": {

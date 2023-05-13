@@ -1,7 +1,7 @@
-import { PostgrestError, createClient } from '@supabase/supabase-js';
+import { createClient, type PostgrestError } from '@supabase/supabase-js';
 import sampleResponse from '../tests/sample-response.json';
-import silent from '../tests/silent';
-import handle from './handle';
+import silent from '../tests/silent.js';
+import handle from './handle.js';
 
 const originalHandle = handle;
 

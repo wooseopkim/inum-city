@@ -2,12 +2,12 @@
 // https://deno.land/manual/getting_started/setup_your_environment
 // This enables autocomplete, go to definition, etc.
 
-import { PostgrestError, createClient } from '@supabase/supabase-js';
-import { CustomError } from './CustomError';
-import { Paginator } from './Paginator';
-import { supabaseKey, supabaseUrl } from './env';
-import { isUniqueViolation } from './postgres';
-import { PublicApiResponse, fetchAnimalList } from './public_api';
+import { createClient, type PostgrestError } from '@supabase/supabase-js';
+import { CustomError } from './CustomError.js';
+import { supabaseKey, supabaseUrl } from './env.js';
+import { Paginator } from './Paginator.js';
+import { isUniqueViolation } from './postgres.js';
+import { fetchAnimalList, type PublicApiResponse } from './public-api.js';
 
 const jsonContentTypeHeader = /^application\/json(;.+)?/;
 
