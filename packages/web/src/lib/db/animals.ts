@@ -10,7 +10,7 @@ export function loadAnimalPage({ size, after }: LoadParams) {
 	const unpaged = supabase
 		.from('animals')
 		.select<'body', AnimalRecord>('body')
-		.order('body->desertionNo', { ascending: false })
+		.order('body->happenDt', { ascending: false })
 		.limit(size);
 
 	if (after === undefined) {
