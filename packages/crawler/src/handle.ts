@@ -1,12 +1,7 @@
-// Follow this setup guide to integrate the Deno language server with your editor:
-// https://deno.land/manual/getting_started/setup_your_environment
-// This enables autocomplete, go to definition, etc.
-
-import { createClient, type PostgrestError } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 import { CustomError } from './CustomError';
-import { supabaseKey, supabaseUrl } from './env';
 import { Paginator } from './Paginator';
-import { isUniqueViolation } from './postgres';
+import { supabaseKey, supabaseUrl } from './env';
 import { fetchAnimalList, type PublicApiResponse } from './public-api';
 
 const jsonContentTypeHeader = /^application\/json(;.+)?/;
@@ -23,7 +18,7 @@ export default async function handle(request?: Request) {
 	const contentType = headers.get('Content-Type') ?? '';
 
 	if (!jsonContentTypeHeader.test(contentType)) {
-		console.error({
+		console.error('wrong content type', {
 			status,
 			headers,
 			contentType,
@@ -35,7 +30,7 @@ export default async function handle(request?: Request) {
 	const animalListBody: PublicApiResponse = await animalListResponse.json();
 
 	if (!ok || animalListBody.response.header.resultCode !== '00') {
-		console.error({
+		console.error('abnormal response', {
 			status,
 			headers,
 			request,
@@ -52,68 +47,44 @@ export default async function handle(request?: Request) {
 	const supabase = createClient(supabaseUrl, supabaseKey);
 
 	if (apiList === undefined || apiList.length === 0) {
-		console.warn({
+		console.warn('end of list', {
 			status,
 			headers,
 			request,
 			animalListBody,
 		});
-		throw new CustomError('End of the list');
+		return undefined;
 	}
 
 	const records = apiList.map((x) => ({
 		body: x,
 	}));
-	let { count: dbCount } = await supabase.from('animals').select('id', {
+
+	const result = await supabase.rpc('upsert_animals', { data: records }, {
 		count: 'exact',
-		head: true,
 	});
-	let error: PostgrestError | null = null;
+	const { count: upsertedCount, error } = result;
 
-	// Because upsert's onConflict parameter now currently supports field names only,
-	// our jsonb expression ((body->'desertionNo'::text)) won't get parsed withour errors.
-	// Instead, here we handle unique violation errors programatically.
-	// Note that onConflict parameter is handled by PostgREST server.
-	for (const record of records) {
-		const result = await supabase.from('animals').insert(record, {
-			count: 'exact',
-		});
-		if (result.count !== null) {
-			dbCount = result.count;
-		}
-		error = result.error;
-
-		if (error != null && !isUniqueViolation(error)) {
-			console.error({
-				error,
-				record,
-			});
-			throw new CustomError('Error inserting data into DB');
-		}
-	}
-
-	if (dbCount == null) {
-		console.error({
+	if (error != null) {
+		console.error('error inserting data', {
+			error,
 			records,
+			upsertedCount,
 		});
-		throw new CustomError('Failed to fetch count from DB');
+		throw new CustomError('Error inserting data into DB');
 	}
 
-	console.debug({
+	console.debug('successful response', {
 		status,
 		headers,
 		request,
 		animalListBody,
 		apiCount,
-		dbCount,
 		totalCount,
+		upsertedCount,
 	});
-	const dbIncomplete = dbCount < totalCount;
-	const body = dbIncomplete
-		? {
-				next: paginator.next(),
-				totalCount,
-		  }
-		: undefined;
-	return body;
+	return {
+		next: paginator.next(),
+		totalCount,
+	};
 }

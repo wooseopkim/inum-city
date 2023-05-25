@@ -1,5 +1,5 @@
 const DEFAULT_PAGE = 1;
-const DEFAULT_SIZE = 10;
+const DEFAULT_SIZE = 100;
 
 export class Paginator {
 	readonly page: number;

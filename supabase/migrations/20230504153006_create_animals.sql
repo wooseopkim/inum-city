@@ -12,3 +12,15 @@ create policy "Enable read access for all users"
     for select using (true);
 
 create unique index animals_desertion_no_idx on animals using btree (((body -> 'desertionNo'::text)));
+
+-- `onConflict` parameter of Supabase SDK's `upsert` function now currently takes column names only.
+-- Therefore, here we need to define custom PostgreSQL function.
+-- Note that onConflict parameter is handled by PostgREST server, not on Supabase side.
+create function upsert_animals(data animals[])
+returns setof animals
+language sql
+as $$
+  insert into animals (body) select body from unnest($1)
+  on conflict ((body->'desertionNo'::text)) do update set body = excluded.body
+  returning *;
+$$;

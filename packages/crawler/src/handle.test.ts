@@ -26,7 +26,7 @@ describe(handle, () => {
 			expect(fetch).toHaveBeenCalledTimes(1);
 			const url = (fetch as jest.Mock).mock.lastCall?.[0] as URL;
 			expect(url.searchParams.get('pageNo')).toBe('1');
-			expect(url.searchParams.get('numOfRows')).toBe('10');
+			expect(url.searchParams.get('numOfRows')).toBe('100');
 		});
 
 		it('passes given parameters', async () => {
@@ -113,19 +113,11 @@ describe(handle, () => {
 
 			expect(result?.next).toEqual({
 				page: 2,
-				size: 10,
+				size: 100,
 			});
 		});
 
-		it('returns undefined when all stored', async () => {
-			mockSupabase(20230513, null);
-
-			const result = await handle();
-
-			expect(result?.next).toBeUndefined();
-		});
-
-		it('fails when empty list is returned', async () => {
+		it('returns undefined when empty list is returned', async () => {
 			mockFetch(
 				JSON.stringify({
 					...sampleResponse,
@@ -139,9 +131,9 @@ describe(handle, () => {
 				})
 			);
 
-			const promise = handle();
+			const result = await handle();
 
-			await expect(promise).rejects.toHaveProperty('message', 'End of the list');
+			expect(result).toBeUndefined();
 		});
 
 		it('fails when db error occurs', async () => {
@@ -150,51 +142,6 @@ describe(handle, () => {
 			const promise = handle();
 
 			await expect(promise).rejects.toHaveProperty('message', 'Error inserting data into DB');
-		});
-
-		it('fails when count is null', async () => {
-			mockSupabase(null, null);
-
-			const promise = handle();
-
-			await expect(promise).rejects.toHaveProperty('message', 'Failed to fetch count from DB');
-		});
-
-		it('ignores unique violation errors', async () => {
-			let i = 0;
-			(createClient as jest.Mock).mockImplementation(() => ({
-				from: () => ({
-					insert: () =>
-						Promise.resolve(
-							++i % 2 === 0
-								? {
-										count: 10,
-										error: null,
-								  }
-								: {
-										count: null,
-										error: { code: '23505' } as PostgrestError,
-								  }
-						),
-					select: () =>
-						Promise.resolve({
-							count: null,
-							error: {} as PostgrestError,
-						}),
-				}),
-			}));
-
-			const promise = handle();
-
-			await expect(promise).resolves.not.toThrow();
-		});
-
-		it('ignores unique violation errors but still requires count', async () => {
-			mockSupabase(null, { code: '23505' } as PostgrestError);
-
-			const promise = handle();
-
-			await expect(promise).rejects.toHaveProperty('message', 'Failed to fetch count from DB');
 		});
 	});
 });
@@ -214,17 +161,10 @@ function mockFetch(
 
 function mockSupabase(count: number | null, error: PostgrestError | null) {
 	(createClient as jest.Mock).mockImplementation(() => ({
-		from: () => ({
-			insert: () =>
-				Promise.resolve({
-					count,
-					error,
-				}),
-			select: () =>
-				Promise.resolve({
-					count,
-					error,
-				}),
-		}),
+		rpc: () =>
+			Promise.resolve({
+				count,
+				error,
+			}),
 	}));
 }
