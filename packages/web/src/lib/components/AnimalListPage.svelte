@@ -1,49 +1,39 @@
 <script lang="ts">
-    import type { AnimalItem } from '$lib/db/AnimalItem';
+    import type { AnimalRecord } from '$lib/db/AnimalRecord';
+    import addIntersectionListener from '$lib/dom/listeners';
+    import { AnimalItem } from '$lib/models/AnimalItem';
     import type { PostgrestResponse } from '@supabase/supabase-js';
-    import { createEventDispatcher, onDestroy } from 'svelte';
+    import { createEventDispatcher } from 'svelte';
     import AnimalCard from './AnimalCard.svelte';
     
-    export let response: PostgrestResponse<AnimalItem>;
+    export let response: PostgrestResponse<AnimalRecord>;
     let data: typeof response['data'];
     let error: typeof response['error'];
     $: ({ data, error } = response);
 
     const dispatch = createEventDispatcher<{
-        loadrequest: AnimalItem['body'];
+        loadrequest: AnimalRecord['body'];
     }>();
 
     let lastElement: HTMLElement;
-    $: (() => {
-        if (typeof IntersectionObserver === 'undefined') {
-            return;
-        }
-        if (lastElement === undefined) {
-            return;
-        }
-        const observer = new IntersectionObserver((entries) => {
-            const intersecting = entries[0]?.isIntersecting ?? false;
-            if (intersecting) {
-                dispatch('loadrequest', data?.[data.length - 1]?.body);
-                observer.unobserve(lastElement);
-            }
-        });
-        observer.observe(lastElement);
-        onDestroy(() => observer.disconnect());
-    })();
+    $: addIntersectionListener(lastElement, (observer) => {
+        dispatch('loadrequest', data?.[data.length - 1]?.body);
+        observer.unobserve(lastElement);
+    });
 </script>
 
 
 {#if error === null && data !== null}
     <div>
         {#each data as { body }, i}
+            {@const item = new AnimalItem(body)}
             {#key body.desertionNo}
                 {#if i === data.length - 2}
                     <div bind:this={lastElement}>
-                        <AnimalCard data={body} />
+                        <AnimalCard data={item} />
                     </div>
                 {:else}
-                    <AnimalCard data={body} />
+                    <AnimalCard data={item} />
                 {/if}
             {/key}
         {/each}

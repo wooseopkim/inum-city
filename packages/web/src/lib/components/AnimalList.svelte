@@ -1,14 +1,14 @@
 <script lang="ts">
-	import type { AnimalItem } from '$lib/db/AnimalItem';
+	import type { AnimalRecord } from '$lib/db/AnimalRecord';
 	import type { PostgrestResponse } from '@supabase/supabase-js';
 	import AnimalAutoListPage from "./AnimalAutoListPage.svelte";
 	import AnimalListPage from "./AnimalListPage.svelte";
 
-    export let initialResponse: PostgrestResponse<AnimalItem>;
+    export let initialResponse: PostgrestResponse<AnimalRecord>;
 
     let pages: { after: string; }[] = [];
 
-    function onLoadRequest(data: AnimalItem['body']) {
+    function onLoadRequest(data: AnimalRecord['body']) {
         const concatenated = [...pages, {
             after: data.desertionNo as string,
         }];

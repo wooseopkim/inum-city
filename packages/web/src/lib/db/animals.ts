@@ -1,4 +1,4 @@
-import type { AnimalItem } from './AnimalItem';
+import type { AnimalRecord } from './AnimalRecord';
 import supabase from './client';
 
 type LoadParams = {
@@ -9,7 +9,7 @@ type LoadParams = {
 export function loadAnimalPage({ size, after }: LoadParams) {
 	const unpaged = supabase
 		.from('animals')
-		.select<'body', AnimalItem>('body')
+		.select<'body', AnimalRecord>('body')
 		.order('body->desertionNo', { ascending: false })
 		.limit(size);
 
