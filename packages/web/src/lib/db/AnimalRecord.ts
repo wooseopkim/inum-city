@@ -1,4 +1,4 @@
-type Key =
+type Required =
 	| 'age'
 	| 'orgNm'
 	| 'sexCd'
@@ -21,7 +21,8 @@ type Key =
 	| 'happenPlace'
 	| 'specialMark'
 	| 'processState';
+type Optional = 'noticeComment';
 
 export type AnimalRecord = {
-	body: Record<Key, string>;
+	body: Record<Required, string> & Record<Optional, string | undefined>;
 };

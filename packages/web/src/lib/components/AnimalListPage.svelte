@@ -4,7 +4,7 @@
     import { AnimalItem } from '$lib/models/AnimalItem';
     import type { PostgrestResponse } from '@supabase/supabase-js';
     import { createEventDispatcher } from 'svelte';
-    import AnimalCard from './AnimalCard.svelte';
+    import Item from './AnimalItem.svelte';
     
     export let response: PostgrestResponse<AnimalRecord>;
     let data: typeof response['data'];
@@ -22,16 +22,15 @@
     });
 </script>
 
-
 {#if error === null && data !== null}
     {#each data as { body }, i}
         {@const item = new AnimalItem(body)}
         {#key body.desertionNo}
             {#if i === data.length - 2}
-                <AnimalCard data={item} />
+                <Item data={item} />
                 <div bind:this={lastElement} />
             {:else}
-                <AnimalCard data={item} />
+                <Item data={item} />
             {/if}
         {/key}
     {/each}
