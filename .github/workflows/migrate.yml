@@ -22,4 +22,6 @@ jobs:
         with:
           version: 1.0.0
 
-      - run: supabase db push --project-ref $PROJECT_ID
+      - run: supabase link --project-ref $PROJECT_ID
+
+      - run: supabase db push
