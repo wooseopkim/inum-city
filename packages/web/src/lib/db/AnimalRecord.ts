@@ -24,5 +24,6 @@ type Required =
 type Optional = 'noticeComment';
 
 export type AnimalRecord = {
+	id: number;
 	body: Record<Required, string> & Record<Optional, string | undefined>;
 };

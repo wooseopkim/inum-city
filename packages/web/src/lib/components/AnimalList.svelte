@@ -6,11 +6,11 @@
 
     export let initialResponse: PostgrestResponse<AnimalRecord>;
 
-    let pages: { after: string; }[] = [];
+    let pages: { after: AnimalRecord; }[] = [];
 
-    function onLoadRequest(data: AnimalRecord['body']) {
+    function onLoadRequest(data: AnimalRecord) {
         const concatenated = [...pages, {
-            after: data.desertionNo as string,
+            after: data,
         }];
         pages = [...new Set(concatenated)];
     }
@@ -18,7 +18,7 @@
 
 <AnimalListPage response={initialResponse} on:loadrequest={(e) => onLoadRequest(e.detail)} />
 {#each pages as { after }}
-    {#key after}
+    {#key after.body.desertionNo}
         <AnimalAutoListPage {after} on:loadrequest={(e) => onLoadRequest(e.detail)} />
     {/key}
 {/each}

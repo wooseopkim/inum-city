@@ -1,8 +1,9 @@
 <script lang="ts">
-    import { loadAnimalPage } from '$lib/db/animals';
-    import AnimalListPage from './AnimalListPage.svelte';
+	import type { AnimalRecord } from '$lib/db/AnimalRecord';
+	import { loadAnimalPage } from '$lib/db/animals';
+	import AnimalListPage from './AnimalListPage.svelte';
 
-    export let after: string | undefined = undefined;
+    export let after: AnimalRecord | undefined = undefined;
     export let size = 10;
 
     const page = loadAnimalPage({ size, after });

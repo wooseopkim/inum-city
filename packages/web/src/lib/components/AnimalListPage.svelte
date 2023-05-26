@@ -12,12 +12,12 @@
     $: ({ data, error } = response);
 
     const dispatch = createEventDispatcher<{
-        loadrequest: AnimalRecord['body'];
+        loadrequest: AnimalRecord;
     }>();
 
     let lastElement: HTMLElement;
     $: addIntersectionListener(lastElement, (observer) => {
-        dispatch('loadrequest', data?.[data.length - 1]?.body);
+        dispatch('loadrequest', data?.[data.length - 1]);
         observer.unobserve(lastElement);
     });
 </script>
