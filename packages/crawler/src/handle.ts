@@ -60,9 +60,13 @@ export default async function handle(request?: Request) {
 		body: x,
 	}));
 
-	const result = await supabase.rpc('upsert_animals', { data: records }, {
-		count: 'exact',
-	});
+	const result = await supabase.rpc(
+		'upsert_animals',
+		{ data: records },
+		{
+			count: 'exact',
+		}
+	);
 	const { count: upsertedCount, error } = result;
 
 	if (error != null) {
