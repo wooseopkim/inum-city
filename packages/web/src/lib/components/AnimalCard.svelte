@@ -3,13 +3,11 @@
 	import addIntersectionListener from "$lib/dom/listeners";
 	import type { AnimalItem } from "$lib/models/AnimalItem";
 	import mulberry32 from "$lib/mulberry32";
-	import { angle } from "$lib/random";
+	import { angle, color } from "$lib/random";
 	
     export let data: AnimalItem;
 
     const random = mulberry32(parseInt(data.source.desertionNo, 10));
-
-    const directions = [[-1, 1], [1, -1], [1, 1]] as const;
 
     type Sign = -1 | 1;
     const getOpts = (x: Sign) => ({
@@ -21,6 +19,7 @@
             degree: 30,
         },
     });
+    const directions = [[-1, 1], [1, -1], [1, 1]] as const;
     let transforms = directions.map(([x]) => getOpts(x as Sign))
             .map((x) => randomTransform(x)) as [string, string, string];
 
@@ -68,13 +67,19 @@
         transforms = directions.map(([x, y]) => getOpts(x as Sign, y as Sign))
             .map((x) => randomTransform(x)) as [string, string, string];
     }
+
+    function randomColor() {
+        return `rgb(${color(random).join(', ')})`;
+    }
 </script>
 
 <div class="container">
     {#if !data.terminated}
         <aside bind:this={el}>
-            <section class="map" style:transform={transforms[0]}>
-                <a href={`https://map.kakao.com/?q=${data.source.careAddr}`} target="_blank" referrerpolicy="no-referrer">{data.source.careAddr}</a>
+            <section class="map" style:transform={transforms[0]} style:background-color={randomColor()}>
+                <a href={`https://map.kakao.com/?q=${data.source.careAddr}`} target="_blank" referrerpolicy="no-referrer">
+                    {data.source.careAddr}
+                </a>
             </section>
         </aside>
     {/if}
@@ -111,14 +116,14 @@
     </article>
     {#if !data.terminated}
         <aside class="contacts">
-            <section class="authority name-card" style:transform={transforms[1]}>
+            <section class="authority name-card" style:transform={transforms[1]} style:background-color={randomColor()}>
                 <span>보호소</span>
                 <h4>{data.source.careNm}</h4>
                 <a href={`tel:${data.source.careTel}`}>{data.source.careTel}</a>
             </section>
-            <section class="shelter name-card" style:transform={transforms[2]}>
+            <section class="shelter name-card" style:transform={transforms[2]} style:background-color={randomColor()}>
                 <span>관할기관</span>
-                <h4>{data.source.orgNm} {data.source.chargeNm}</h4>
+                <h4>{data.source.orgNm} {data.source.chargeNm ?? ''}</h4>
                 <a href={`tel:${data.source.officetel}`}>{data.source.officetel}</a>
             </section>
         </aside>
@@ -163,8 +168,8 @@
 
             & .note {
                 animation-name: note-bound;
-                animation-duration: 1s;
-                animation-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.28);
+                animation-duration: 0.2s;
+                animation-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1);
             }
         }
 
@@ -281,6 +286,7 @@
         box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
         --translate-by: calc(0px - var(--shadow-offset) / 2);
         transform: translateX(var(--translate-by)) translateY(var(--translate-by));
+        transition-property: scale;
 
         & > span {
             border: 3px solid black;
@@ -299,16 +305,17 @@
 
     @keyframes -global-note-bound {
         50% {
-            --shadow-offset: 9px;
+            --shadow-offset: 8px;
             box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
             --translate-by: calc(0px - var(--shadow-offset) / 2);
             transform: translateX(var(--translate-by)) translateY(var(--translate-by));
+            scale: 101%;
         }
     }
 
     aside > * {
         border: var(--border-width) solid black;
-        background-color: white;
+        border-radius: 6px;
         width: 12rem;
         height: 7rem;
         padding: 1rem;
@@ -321,6 +328,7 @@
         line-height: 2;
         transition-property: transform, scale, box-shadow;
         transition-duration: 0.5s;
+        position: relative;
 
         &:hover {
             scale: 1.05;
@@ -333,11 +341,17 @@
             line-height: 1.5;
         }
 
-        &.name-card {
-            & h4 {
-                margin: 0;
-                line-height: 1;
-            }
+        &.name-card h4 {
+            margin: 0;
+            line-height: 1;
+        }
+
+        & a[target="_blank"]::before {
+            content: '🌏';
+        }
+
+        & a[href^="tel:"]::before {
+             content: '📞';
         }
     }
 </style>

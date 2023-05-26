@@ -7,8 +7,8 @@ export async function load() {
 
     const random = mulberry32(new Date().valueOf());
     const backgroundColor = color(random, {
-        base: 192,
-        diff: 64,
+        base: 216,
+        diff: 32,
     });
 
 	return {

@@ -36,7 +36,7 @@ export class AnimalItem {
         this.terminated = terminated;
         
         const random = mulberry32(parseInt(source.desertionNo));
-        const rgb = color(random, { base: 128, diff: 128 });
+        const rgb = color(random);
         this.primaryColor = terminated ? 'darkgrey' : `rgb(${rgb.join(', ')})`;
         this.highlightColor = terminated ? 'lightgrey' : `rgba(${rgb.join(', ')}, 0.4)`;
         
