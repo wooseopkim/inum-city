@@ -8,7 +8,10 @@ type LoadParams = {
 	after?: AnimalRecord;
 };
 
-export function loadAnimalPage({ size, after }: LoadParams): PostgrestFilterBuilder<GenericSchema, Record<string, unknown>, AnimalRecord[]> {
+export function loadAnimalPage({
+	size,
+	after,
+}: LoadParams): PostgrestFilterBuilder<GenericSchema, Record<string, unknown>, AnimalRecord[]> {
 	const unpaged = supabase
 		.from('animals')
 		.select<string, AnimalRecord>()
@@ -19,6 +22,7 @@ export function loadAnimalPage({ size, after }: LoadParams): PostgrestFilterBuil
 	if (after === undefined) {
 		return unpaged;
 	}
-	return unpaged.lte('body->>happenDt', after.body.happenDt)
+	return unpaged
+		.lte('body->>happenDt', after.body.happenDt)
 		.lt('body->>desertionNo', after.body.desertionNo);
 }
