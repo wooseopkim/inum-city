@@ -1,7 +1,6 @@
-import { parseString } from '$lib/date';
 import type { AnimalRecord } from '$lib/db/AnimalRecord';
-import mulberry32 from '$lib/mulberry32';
-import { color } from '$lib/random';
+import { parseString } from '$lib/ui/date';
+import { Random } from '$lib/ui/random';
 
 const neutralizedLabels = {
     'Y': ['완료', '한'],
@@ -18,6 +17,7 @@ const sexLabels = {
 export class AnimalItem {
     source: AnimalRecord['body'];
 
+    id: number;
     terminated: boolean;
     primaryColor: string;
     highlightColor: string;
@@ -32,13 +32,14 @@ export class AnimalItem {
     constructor(source: AnimalRecord['body']) {
         this.source = source;
 
+        this.id = parseInt(source.desertionNo, 10);
+
         const terminated = Boolean(source.processState.match(/종료\s*\(.+?사\)/));
         this.terminated = terminated;
         
-        const random = mulberry32(parseInt(source.desertionNo));
-        const rgb = color(random);
-        this.primaryColor = terminated ? 'darkgrey' : `rgb(${rgb.join(', ')})`;
-        this.highlightColor = terminated ? 'lightgrey' : `rgba(${rgb.join(', ')}, 0.4)`;
+        const random = new Random(this.id);
+        const color = random.rgb();
+        [this.primaryColor, this.highlightColor] = terminated ? ['darkgrey', 'lightgrey'] : [color, color.replace(/`^rgb\((.+)\)$`/, 'rgba($1, 0.4)')];
         
         const { year, desc, suffix } = source.age.match(/(?<year>.+?)(\((?<desc>.+?)\))?\((?<suffix>.+)\)/)?.groups ?? {};
         this.age = desc ?? `${year ?? ''}${suffix ?? ''}`;

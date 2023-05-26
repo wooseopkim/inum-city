@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css" type="text/css"/>
 </svelte:head>
 
-<main style:background-color={`rgb(${data.backgroundColor.join(', ')})`}>
+<main style:background-color={data.backgroundColor}>
     <AnimalList initialResponse={data.initialData} />
 </main>
 
@@ -34,6 +34,9 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+    }
+
+    :root, main {
         overflow-x: hidden;
     }
 </style>

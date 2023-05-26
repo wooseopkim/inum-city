@@ -1,88 +1,15 @@
 <script lang="ts">
-	import { format } from "$lib/date";
-	import addIntersectionListener from "$lib/dom/listeners";
 	import type { AnimalItem } from "$lib/models/AnimalItem";
-	import mulberry32 from "$lib/mulberry32";
-	import { angle, color } from "$lib/random";
+	import { format } from "$lib/ui/date";
+	import Contacts from "./AnimalCard/Contacts.svelte";
+	import Location from "./AnimalCard/Location.svelte";
 	
     export let data: AnimalItem;
-
-    const random = mulberry32(parseInt(data.source.desertionNo, 10));
-
-    type Sign = -1 | 1;
-    const getOpts = (x: Sign) => ({
-        translateX: {
-            degree: x * 50,
-            unit: 'vw',
-        },
-        rotateZ: {
-            degree: 30,
-        },
-    });
-    const directions = [[-1, 1], [1, -1], [1, 1]] as const;
-    let transforms = directions.map(([x]) => getOpts(x as Sign))
-            .map((x) => randomTransform(x)) as [string, string, string];
-
-    type TransformOpts = {
-        translateX: {
-            degree: number;
-            unit: string;
-        };
-        translateY?: {
-            degree: number;
-            unit: string;
-        };
-        rotateZ: {
-            degree: number;
-        };
-    };
-    function randomTransform({ translateX, translateY, rotateZ }: TransformOpts) {
-        return [
-            `translateX(${random() * translateX.degree}${translateX.unit})`,
-            `translateY(${random() * (translateY?.degree ?? 0)}${translateY?.unit ?? ''})`,
-            `rotateZ(${angle(random, rotateZ.degree)}deg)`,
-        ].join(' ');
-    }
-
-    let el: HTMLElement;
-    $: addIntersectionListener(el, (observer) => {
-        flyInAsideSections();
-        observer.unobserve(el);
-    });
-
-    function flyInAsideSections() {
-        const getOpts = (x: Sign, y: Sign) => ({
-            translateX: {
-                degree: x * 5,
-                unit: 'rem',
-            },
-            translateY: {
-                degree: y * 2,
-                unit: 'rem',
-            },
-            rotateZ: {
-                degree: 10,
-            },
-        });
-        transforms = directions.map(([x, y]) => getOpts(x as Sign, y as Sign))
-            .map((x) => randomTransform(x)) as [string, string, string];
-    }
-
-    function randomColor() {
-        return `rgb(${color(random).join(', ')})`;
-    }
+    let showExtras: boolean;
+    $: (showExtras = !data.terminated);
 </script>
 
 <div class="container">
-    {#if !data.terminated}
-        <aside bind:this={el}>
-            <section class="map" style:transform={transforms[0]} style:background-color={randomColor()}>
-                <a href={`https://map.kakao.com/?q=${data.source.careAddr}`} target="_blank" referrerpolicy="no-referrer">
-                    {data.source.careAddr}
-                </a>
-            </section>
-        </aside>
-    {/if}
     <article style:background-color={data.primaryColor} data-terminated={data.terminated}>
         <header>
             <li>{data.source.noticeNo}</li>
@@ -114,29 +41,30 @@
             {data.source.specialMark}
         </section>
     </article>
-    {#if !data.terminated}
-        <aside class="contacts">
-            <section class="authority name-card" style:transform={transforms[1]} style:background-color={randomColor()}>
-                <span>보호소</span>
-                <h4>{data.source.careNm}</h4>
-                <a href={`tel:${data.source.careTel}`}>{data.source.careTel}</a>
-            </section>
-            <section class="shelter name-card" style:transform={transforms[2]} style:background-color={randomColor()}>
-                <span>관할기관</span>
-                <h4>{data.source.orgNm} {data.source.chargeNm ?? ''}</h4>
-                <a href={`tel:${data.source.officetel}`}>{data.source.officetel}</a>
-            </section>
-        </aside>
+    {#if showExtras}
+        <section class="extras">
+            <Location address={data.source.careAddr} />
+            <div class="extra-spacer" />
+            <Contacts {data} />
+        </section>
     {/if}
 </div>
 
 <style>
     .container {
+        width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-direction: row;
         --shadow-color: rgba(0, 0, 0, 0.9);
         --border-width: 4px;
+        --card-width: 50rem;
+
+        @media (max-width: 1440px) {
+            flex-direction: column;
+            overflow-y: hidden;
+        }
     }
 
     article {
@@ -152,30 +80,33 @@
         margin-inline-end: var(--margin-horizontal);
         margin-block-start: var(--margin-vertical);
         margin-block-end: var(--margin-vertical);
-        --padding-horizontal: 1.5rem;
-        --padding-vertical: 2rem;
-        padding: var(--padding-horizontal) var(--padding-vertical);
-        width: 50rem;
+        --padding-horizontal: 2rem;
+        --padding-vertical: 1.5rem;
+        padding: var(--padding-vertical) var(--padding-horizontal);
+        width: var(--card-width);
         max-width: calc(80cqi - 2 * var(--padding-horizontal) - 2 * var(--margin-horizontal));
-        transition-duration: 0.1s;
+        transition-duration: 0.2s;
         transition-property: box-shadow, transform, opacity;
         transition-timing-function: ease-in-out;
         cursor: pointer;
         position: relative;
+        z-index: 1;
+        
+        @media (max-width: 768px) {
+            --margin-horizontal: 0.5rem;
+            --margin-vertical: 1rem;
+            --padding-horizontal: 1rem;
+            --padding-vertical: 1rem;
+        }
 
         &:not([data-terminated="true"]):hover {
             --shadow-offset: 24px;
 
             & .note {
                 animation-name: note-bound;
-                animation-duration: 0.2s;
-                animation-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1);
+                animation-duration: 0.4s;
+                animation-timing-function: ease-in-out;
             }
-        }
-
-        @media (max-width: 768px) {
-            --padding-horizontal: 2rem;
-            --padding-vertical: 1.5rem;
         }
 
         &[data-terminated="true"] {
@@ -196,12 +127,24 @@
         }
     }
 
+    @keyframes -global-note-bound {
+        50% {
+            --shadow-offset: 8px;
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
+            scale: 101%;
+        }
+    }
+
     header {
         display: flex;
         flex-direction: row;
         align-items: center;
         margin-block-end: 1rem;
         font-weight: 900;
+        
+        @media (max-width: 768px) {
+            flex-direction: column;
+        }
         
         & li {
             display: inline-block;
@@ -244,18 +187,32 @@
         align-items: center;
         flex-direction: row;
 
+        @media (max-width: 768px) {
+            flex-direction: column;
+        }
+
         & img {
             border-radius: calc(var(--card-border-radius) * 0.5);
             --thumbnail-size: 140px;
             width: var(--thumbnail-size);
             height: var(--thumbnail-size);
-            margin: 0.5rem;
+            --margin: 0.5rem;
+            margin: var(--margin);
             object-fit: cover;
             background-color: grey;
+
+            @media (max-width: 768px) {
+                width: calc(100% - var(--margin) * 2);
+            }
         }
 
         & p {
             margin-inline-start: 1.6em;
+
+            @media (max-width: 768px) {
+                margin-inline-start: 0.5rem;
+                margin-inline-end: 0.5rem;
+            }
         }
 
         & p mark {
@@ -286,7 +243,6 @@
         box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
         --translate-by: calc(0px - var(--shadow-offset) / 2);
         transform: translateX(var(--translate-by)) translateY(var(--translate-by));
-        transition-property: scale;
 
         & > span {
             border: 3px solid black;
@@ -303,55 +259,35 @@
         }
     }
 
-    @keyframes -global-note-bound {
-        50% {
-            --shadow-offset: 8px;
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
-            --translate-by: calc(0px - var(--shadow-offset) / 2);
-            transform: translateX(var(--translate-by)) translateY(var(--translate-by));
-            scale: 101%;
-        }
-    }
+    .extras {
+        display: none;
 
-    aside > * {
-        border: var(--border-width) solid black;
-        border-radius: 6px;
-        width: 12rem;
-        height: 7rem;
-        padding: 1rem;
-        display: flex;
-        align-items: end;
-        justify-content: flex-end;
-        flex-direction: column;
-        text-align: end;
-        word-break: keep-all;
-        line-height: 2;
-        transition-property: transform, scale, box-shadow;
-        transition-duration: 0.5s;
-        position: relative;
+        @media (min-width: 768px) and (max-width: 1440px) {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            overflow-x: clip;
+            padding-block-end: 1.2rem;
 
-        &:hover {
-            scale: 1.05;
-            z-index: 1;
-            --shadow-offset: 8px;
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
+            & > *:last-child {
+                display: flex;
+            }
         }
 
-        &.map {
-            line-height: 1.5;
-        }
+        @media (min-width: 1440px) {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            width: 100%;
 
-        &.name-card h4 {
-            margin: 0;
-            line-height: 1;
-        }
-
-        & a[target="_blank"]::before {
-            content: '🌏';
-        }
-
-        & a[href^="tel:"]::before {
-             content: '📞';
+            & .extra-spacer {
+                width: var(--card-width);
+                --padding-horizontal: 6rem;
+                padding-inline-start: var(--padding-horizontal);
+                padding-inline-end: var(--padding-horizontal);
+            }
         }
     }
 </style>

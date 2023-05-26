@@ -24,20 +24,17 @@
 
 
 {#if error === null && data !== null}
-    <div>
-        {#each data as { body }, i}
-            {@const item = new AnimalItem(body)}
-            {#key body.desertionNo}
-                {#if i === data.length - 2}
-                    <div bind:this={lastElement}>
-                        <AnimalCard data={item} />
-                    </div>
-                {:else}
-                    <AnimalCard data={item} />
-                {/if}
-            {/key}
-        {/each}
-    </div>
+    {#each data as { body }, i}
+        {@const item = new AnimalItem(body)}
+        {#key body.desertionNo}
+            {#if i === data.length - 2}
+                <AnimalCard data={item} />
+                <div bind:this={lastElement} />
+            {:else}
+                <AnimalCard data={item} />
+            {/if}
+        {/key}
+    {/each}
 {:else}
     <div style:color="orange">{JSON.stringify(error)}</div>
 {/if}
