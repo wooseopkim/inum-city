@@ -13,7 +13,6 @@ jobs:
 
     env:
       SUPABASE_ACCES_TOKEN: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      PROJECT_ID: vrpyodyxhlbljkedyeoy
 
     steps:
       - uses: actions/checkout@v3
