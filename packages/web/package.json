@@ -36,5 +36,10 @@
 	"type": "module",
 	"dependencies": {
 		"@supabase/supabase-js": "^2.21.0"
+	},
+	"nx": {
+		"tags": [
+			"scope:web"
+		]
 	}
 }
