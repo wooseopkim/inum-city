@@ -22,5 +22,11 @@ jobs:
       - run: npx nx affected -t check --parallel=3
       - run: npx nx affected -t lint --parallel=3
       - run: npx playwright install --with-deps
-      - run: npx nx affected -t test --parallel=3 --configuration=ci
-      - run: npx nx affected -t build --parallel=3
+      - run: |
+          PUBLIC_SUPABASE_URL="$SUPABASE_URL" \
+          PUBLIC_SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY" \
+          npx nx affected -t test --parallel=3 --configuration=ci
+      - run: |
+          PUBLIC_SUPABASE_URL="$SUPABASE_URL" \
+          PUBLIC_SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY" \
+          npx nx affected -t build --parallel=3
