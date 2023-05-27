@@ -1,24 +1,27 @@
 <script lang="ts">
 	import type { AnimalRecord } from '$lib/db/AnimalRecord';
 	import type { PostgrestResponse } from '@supabase/supabase-js';
-	import AnimalAutoListPage from "./AnimalAutoListPage.svelte";
-	import AnimalListPage from "./AnimalListPage.svelte";
+	import AnimalAutoListPage from './AnimalAutoListPage.svelte';
+	import AnimalListPage from './AnimalListPage.svelte';
 
-    export let initialResponse: PostgrestResponse<AnimalRecord>;
+	export let initialResponse: PostgrestResponse<AnimalRecord>;
 
-    let pages: { after: AnimalRecord; }[] = [];
+	let pages: { after: AnimalRecord }[] = [];
 
-    function onLoadRequest(data: AnimalRecord) {
-        const concatenated = [...pages, {
-            after: data,
-        }];
-        pages = [...new Set(concatenated)];
-    }
+	function onLoadRequest(data: AnimalRecord) {
+		const concatenated = [
+			...pages,
+			{
+				after: data,
+			},
+		];
+		pages = [...new Set(concatenated)];
+	}
 </script>
 
 <AnimalListPage response={initialResponse} on:loadrequest={(e) => onLoadRequest(e.detail)} />
 {#each pages as { after }}
-    {#key after.body.desertionNo}
-        <AnimalAutoListPage {after} on:loadrequest={(e) => onLoadRequest(e.detail)} />
-    {/key}
+	{#key after.body.desertionNo}
+		<AnimalAutoListPage {after} on:loadrequest={(e) => onLoadRequest(e.detail)} />
+	{/key}
 {/each}
