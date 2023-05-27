@@ -18,6 +18,8 @@ jobs:
       - uses: nrwl/nx-set-shas@v3
       - run: npm ci
 
+      - run: npx playwright install --with-deps
+
       - run: npx nx format:check
       - run: npx nx affected -t check --parallel=3
       - run: npx nx affected -t lint --parallel=3
