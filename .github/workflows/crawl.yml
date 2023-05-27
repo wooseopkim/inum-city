@@ -12,8 +12,6 @@ jobs:
         with:
           fetch-depth: 0
       - run: npm ci
-      - run: |
-          echo "SUPABASE_URL=https://${PROJECT_ID}.supabase.co" >> $GITHUB_ENV
       - env:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           PUBLIC_API_KEY: ${{ secrets.PUBLIC_API_KEY }}
