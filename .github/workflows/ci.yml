@@ -24,6 +24,10 @@ jobs:
       - run: |
           PUBLIC_SUPABASE_URL="$SUPABASE_URL" \
           PUBLIC_SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY" \
+          echo "'${PUBLIC_SUPABASE_URL}', '${PUBLIC_SUPABASE_ANON_KEY}'"
+      - run: |
+          PUBLIC_SUPABASE_URL="$SUPABASE_URL" \
+          PUBLIC_SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY" \
           npx nx affected -t build --parallel=3
       - run: npx playwright install --with-deps
       - run: |
