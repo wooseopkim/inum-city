@@ -10,7 +10,7 @@
     {data.source.noticeComment ?? ''}
 </footer>
 
-<style>
+<style lang="scss">
     footer {
         border: var(--border-width) solid black;
         background-color: white;

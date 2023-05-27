@@ -26,7 +26,7 @@
     </div>
 </section>
 
-<style>
+<style lang="scss">
     section {
         border: var(--border-width) solid black;
         border-radius: var(--card-border-radius);

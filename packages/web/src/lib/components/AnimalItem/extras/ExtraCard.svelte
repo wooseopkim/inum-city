@@ -81,7 +81,7 @@
     <slot />
 </section>
 
-<style>
+<style lang="scss">
     section {
         border: var(--border-width) solid black;
         border-radius: 6px;
