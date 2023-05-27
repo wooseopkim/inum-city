@@ -7,6 +7,9 @@ export const publicApiKey = getEnvOrThrow('PUBLIC_API_KEY');
 function getEnvOrThrow(key: string) {
 	const value = process.env[key];
 	if (value === undefined) {
+		if (process.env.NODE_ENV === 'test') {
+			return key;
+		}
 		throw new CustomError(`Missing key parameter (${key})`);
 	}
 	return value;
