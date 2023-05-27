@@ -15,4 +15,5 @@ jobs:
       - env:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           PUBLIC_API_KEY: ${{ secrets.PUBLIC_API_KEY }}
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
         run: npx nx run crawler:start
