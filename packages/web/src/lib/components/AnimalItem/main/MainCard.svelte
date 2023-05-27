@@ -13,7 +13,7 @@
     <Footer {data} />
 </article>
 
-<style lang="scss">
+<style>
     article {
         border: var(--border-width) solid black;
         --card-border-radius: 16px;

@@ -10,7 +10,7 @@
     <li>{data.source.processState}</li>
 </header>
 
-<style lang="scss">
+<style>
     header {
         display: flex;
         flex-direction: row;

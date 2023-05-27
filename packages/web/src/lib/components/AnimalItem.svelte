@@ -20,7 +20,7 @@
     {/if}
 </div>
 
-<style lang="scss">
+<style>
     .container {
         width: 100%;
         display: flex;
