@@ -15,15 +15,12 @@ type LoadParams = Paginator<AnimalRecord> & {
 };
 
 export function loadAnimalPage({ size, after, pred }: LoadParams): FilterBuilder {
-	const base = typeof pred === 'string'
-		? supabase.rpc('search_animals', { query: pred })
-		: supabase
-			.from('animals')
-			.select<string, AnimalRecord>();
+	const base =
+		typeof pred === 'string'
+			? supabase.rpc('search_animals', { query: pred })
+			: supabase.from('animals').select<string, AnimalRecord>();
 
-	const filtered = typeof pred === 'function'
-		? pred(base)
-		: base;
+	const filtered = typeof pred === 'function' ? pred(base) : base;
 
 	const sorted = filtered
 		.order('body->>happenDt', { ascending: false })
