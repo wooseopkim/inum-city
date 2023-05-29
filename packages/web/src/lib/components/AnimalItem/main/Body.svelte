@@ -6,7 +6,7 @@
 </script>
 
 <section>
-	<img src={data.source.filename} alt="미리보기" />
+	<img src={data.source.filename} alt="미리보기" loading="lazy" />
 	<div>
 		<p>
 			중성화 <mark style:background-color={data.highlightColor}>{data.neutralizedLabel[0]}</mark
