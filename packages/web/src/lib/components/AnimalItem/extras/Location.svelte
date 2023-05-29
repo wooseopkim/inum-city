@@ -13,9 +13,24 @@
 <style>
 	a {
 		line-height: 1.5;
+		text-decoration: none;
+		color: initial;
 	}
 
 	a[target='_blank']::before {
 		content: '🌏';
+		display: inline-block;
+	}
+
+	:global(:hover) > a::before {
+		animation-name: rotate;
+		animation-duration: 0.2s;
+		animation-iteration-count: 2;
+	}
+
+	@keyframes rotate {
+		to {
+			transform: rotateZ(-360deg);
+		}
 	}
 </style>

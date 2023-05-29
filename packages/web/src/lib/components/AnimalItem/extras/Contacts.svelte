@@ -24,7 +24,29 @@
 		line-height: 1;
 	}
 
+	a {
+		text-decoration: none;
+		color: initial;
+	}
+
 	a[href^='tel:']::before {
 		content: '📞';
+		display: inline-block;
+	}
+
+	:global(:hover) > a::before {
+		--degree: 25deg;
+		animation-name: jiggle;
+		animation-duration: 0.125s;
+		animation-iteration-count: 4;
+	}
+
+	@keyframes jiggle {
+		33% {
+			transform: rotateZ(calc(0 - var(--degree)));
+		}
+		67% {
+			transform: rotateZ(var(--degree));
+		}
 	}
 </style>
