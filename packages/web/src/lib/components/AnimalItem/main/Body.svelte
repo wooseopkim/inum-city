@@ -57,6 +57,7 @@
 
 		& p {
 			margin-inline-start: 1.6em;
+			line-height: 1.8;
 
 			@media (max-width: 768px) {
 				margin-inline-start: 0.5rem;
