@@ -31,20 +31,20 @@
 		&.terminated {
 			box-shadow: none;
 		}
+	}
 
-		& > span {
-			border: 3px solid black;
-			border-radius: 50%;
-			display: inline-block;
-			--bullet-size: 0.5rem;
-			width: var(--bullet-size);
-			height: var(--bullet-size);
-			margin-inline-end: 2rem;
-			--shadow-offset: 2px;
-			box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
-			--translate-by: calc(0px - var(--shadow-offset) / 2);
-			transform: translateX(var(--translate-by)) translateY(var(--translate-by));
-		}
+	span {
+		border: 3px solid black;
+		border-radius: 50%;
+		display: inline-block;
+		--bullet-size: 0.5rem;
+		width: var(--bullet-size);
+		height: var(--bullet-size);
+		margin-inline-end: 2rem;
+		--shadow-offset: 2px;
+		box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
+		--translate-by: calc(0px - var(--shadow-offset) / 2);
+		transform: translateX(var(--translate-by)) translateY(var(--translate-by));
 	}
 
 	:global(:hover) > footer:not(.terminated) {
