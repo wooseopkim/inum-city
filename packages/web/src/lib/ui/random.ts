@@ -31,7 +31,8 @@ export class Random {
 			.sort((a, b) => a - b) as [number, number, number];
 		const c = 0.05;
 		const d = 0.15;
-		const [r, g, b] = fisheryates([x + c * y + d * z, (1 - c) * y, (1 - d) * z]);
+		const values = [x + c * y + d * z, (1 - c) * y, (1 - d) * z];
+		const [r, g, b] = fisheryates(values, this.rng).map(Math.round);
 		return { r, g, b };
 	}
 

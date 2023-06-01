@@ -37,8 +37,7 @@ export class AnimalItem {
 		const terminated = Boolean(source.processState.match(/종료\s*\(.+?사\)/));
 		this.terminated = terminated;
 
-		const random = new Random(this.id);
-		const color = random.rgb();
+		const color = new Random(this.id).rgb();
 		[this.primaryColor, this.highlightColor] = terminated
 			? ['darkgrey', 'lightgrey']
 			: [color, color.replace(/`^rgb\((.+)\)$`/, 'rgba($1, 0.4)')];

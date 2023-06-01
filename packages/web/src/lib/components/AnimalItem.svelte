@@ -13,7 +13,7 @@
 	<MainCard {data} />
 	{#if showExtras}
 		<section class="extras">
-			<Location address={data.source.careAddr} />
+			<Location {data} />
 			<div class="extra-spacer" />
 			<Contacts {data} />
 		</section>

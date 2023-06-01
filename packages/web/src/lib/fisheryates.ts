@@ -1,8 +1,8 @@
-export default function fisheryates<T>(array: T[]) {
+export default function fisheryates<T>(array: T[], random: () => number) {
 	let counter = array.length;
 
 	while (counter > 0) {
-		const index = Math.floor(Math.random() * counter);
+		const index = Math.floor(random() * counter);
 
 		counter--;
 

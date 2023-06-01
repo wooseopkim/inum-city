@@ -45,12 +45,12 @@
 	};
 	function randomTransform({ translateX, translateY, rotateZ }: TransformOpts) {
 		return [
-			`translateX(${random.number({
+			`translateX(${new Random(id).number({
 				diff: translateX.degree * 0.5,
 				base: translateX.degree * 0.5,
 			})}${translateX.unit})`,
-			`translateY(${random.number({ diff: translateY?.degree ?? 0 })}${translateY?.unit ?? ''})`,
-			`rotateZ(${random.angle({ diff: rotateZ.degree, base: 0 })})`,
+			`translateY(${new Random(id).number({ diff: translateY?.degree ?? 0 })}${translateY?.unit ?? ''})`,
+			`rotateZ(${new Random(id).angle({ diff: rotateZ.degree, base: 0 })})`,
 		].join(' ');
 	}
 

@@ -1,10 +1,18 @@
 <script lang="ts">
+	import cyrb53a from '$lib/cyrb53a';
+	import type { AnimalItem } from '$lib/models/AnimalItem';
 	import ExtraCard from './ExtraCard.svelte';
 
-	export let address: string;
+	export let data: AnimalItem;
+	let address: string;
+	let id: number;
+	$: {
+		address = data.source.careAddr;
+		id = data.id + cyrb53a(address);
+	}
 </script>
 
-<ExtraCard id={0} slideInFrom={['left', 'down']}>
+<ExtraCard {id} slideInFrom={['left', 'down']}>
 	<a href={`https://map.kakao.com/?q=${address}`} target="_blank" referrerpolicy="no-referrer">
 		{address}
 	</a>
