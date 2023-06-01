@@ -9,8 +9,11 @@
 	<img src={data.source.filename} alt="미리보기" loading="lazy" />
 	<div>
 		<p>
-			중성화 <mark style:background-color={data.highlightColor}>{data.neutralizedLabel[0]}</mark
-			>{data.neutralizedLabel[1]}
+			중성화
+			<mark style:background-color={data.highlightColor}>
+				{data.neutralizedLabel[0]}
+			</mark>
+			{data.neutralizedLabel[1]}
 			<mark style:background-color={data.highlightColor}>{data.age}</mark>에
 			<mark style:background-color={data.highlightColor}>{data.weight}</mark>짜리
 			<mark style:background-color={data.highlightColor}>{data.sex}</mark>
