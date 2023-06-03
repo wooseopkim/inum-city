@@ -1,3 +1,6 @@
+/* eslint-env node */
+
+/** @type {import('eslint').Linter.Config} */
 module.exports = {
 	extends: ['../../.eslintrc.cjs', 'plugin:svelte/recommended'],
 	parserOptions: {
