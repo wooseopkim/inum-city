@@ -9,7 +9,7 @@
 		"test": "jest",
 		"check": "tsc --noEmit",
 		"lint": "eslint . && prettier --check .",
-		"format": "prettier --write ."
+		"format": "eslint . --fix && prettier --write ."
 	},
 	"devDependencies": {
 		"@babel/core": "^7.21.8",
