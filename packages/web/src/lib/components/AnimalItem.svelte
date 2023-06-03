@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { AnimalItem } from '$lib/models/AnimalItem';
 	import Contacts from './AnimalItem/extras/Contacts.svelte';
 	import Location from './AnimalItem/extras/Location.svelte';
 	import MainCard from './AnimalItem/main/MainCard.svelte';
+	import type { AnimalItem } from '$lib/models/AnimalItem';
 
 	export let data: AnimalItem;
 	let showExtras: boolean;

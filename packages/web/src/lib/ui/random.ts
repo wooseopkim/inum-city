@@ -1,5 +1,5 @@
-import mulberry32 from '$lib/mulberry32';
 import fisheryates from '../fisheryates';
+import mulberry32 from '$lib/mulberry32';
 
 type Variation = {
 	base?: number;

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { AnimalItem } from '$lib/models/AnimalItem';
 	import ExtraCard from './ExtraCard.svelte';
+	import type { AnimalItem } from '$lib/models/AnimalItem';
 
 	export let data: AnimalItem;
 </script>

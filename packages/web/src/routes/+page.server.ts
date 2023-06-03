@@ -1,5 +1,5 @@
-import { Random } from '$lib/ui/random';
 import { loadAnimalPage } from '../lib/db/animals';
+import { Random } from '$lib/ui/random';
 
 const MINUTE_IN_MILLIS = 1000 * 60;
 

@@ -2,9 +2,14 @@
 
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
-	extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
+	extends: [
+		'eslint:recommended',
+		'plugin:@typescript-eslint/recommended',
+		'plugin:import/typescript',
+		'prettier',
+	],
 	parser: '@typescript-eslint/parser',
-	plugins: ['@typescript-eslint', '@nx'],
+	plugins: ['@nx', 'import'],
 	rules: {
 		'@nx/enforce-module-boundaries': [
 			'error',
@@ -22,6 +27,14 @@ module.exports = {
 				],
 			},
 		],
+		'import/order': 'error',
+	},
+	settings: {
+		typescript: true,
+		node: true,
+		'import/parsers': {
+			'@typescript-eslint/parser': ['.ts'],
+		},
 	},
 	root: true,
 };

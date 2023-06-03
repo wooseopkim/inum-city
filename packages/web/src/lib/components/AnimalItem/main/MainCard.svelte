@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { AnimalItem } from '$lib/models/AnimalItem';
 	import Body from './Body.svelte';
 	import Footer from './Footer.svelte';
 	import Header from './Header.svelte';
+	import type { AnimalItem } from '$lib/models/AnimalItem';
 
 	export let data: AnimalItem;
 </script>

@@ -1,7 +1,7 @@
 <script lang="ts">
+	import ExtraCard from './ExtraCard.svelte';
 	import cyrb53a from '$lib/cyrb53a';
 	import type { AnimalItem } from '$lib/models/AnimalItem';
-	import ExtraCard from './ExtraCard.svelte';
 
 	export let data: AnimalItem;
 	let address: string;

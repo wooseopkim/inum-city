@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { AnimalRecord } from '$lib/db/AnimalRecord';
 	import type { PostgrestResponse } from '@supabase/supabase-js';
 	import AnimalAutoListPage from './AnimalAutoListPage.svelte';
 	import AnimalListPage from './AnimalListPage.svelte';
+	import type { AnimalRecord } from '$lib/db/AnimalRecord';
 
 	export let initialResponse: PostgrestResponse<AnimalRecord>;
 

@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { AnimalRecord } from '$lib/db/AnimalRecord';
-	import addIntersectionListener from '$lib/dom/listeners';
-	import { AnimalItem } from '$lib/models/AnimalItem';
 	import type { PostgrestResponse } from '@supabase/supabase-js';
 	import { createEventDispatcher } from 'svelte';
 	import Item from './AnimalItem.svelte';
+	import type { AnimalRecord } from '$lib/db/AnimalRecord';
+	import addIntersectionListener from '$lib/dom/listeners';
+	import { AnimalItem } from '$lib/models/AnimalItem';
 
 	export let response: PostgrestResponse<AnimalRecord>;
 	let data: (typeof response)['data'];
