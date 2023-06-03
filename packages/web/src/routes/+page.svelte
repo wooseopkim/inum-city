@@ -7,10 +7,6 @@
 	export let data;
 </script>
 
-<svelte:head>
-	<link rel="preconnect" href="https://cdn.jsdelivr.net" />
-</svelte:head>
-
 <main style:background-color={data.backgroundColor}>
 	<AnimalList initialResponse={data.initialData} />
 </main>
