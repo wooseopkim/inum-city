@@ -48,7 +48,7 @@
 			align-items: center;
 			width: 100%;
 			overflow-x: clip;
-			padding-block-end: 1.2rem;
+			padding-block-end: 2.4rem;
 
 			& > *:last-child {
 				display: flex;
