@@ -49,7 +49,9 @@
 				diff: translateX.degree * 0.5,
 				base: translateX.degree * 0.5,
 			})}${translateX.unit})`,
-			`translateY(${new Random(id).number({ diff: translateY?.degree ?? 0 })}${translateY?.unit ?? ''})`,
+			`translateY(${new Random(id).number({ diff: translateY?.degree ?? 0 })}${
+				translateY?.unit ?? ''
+			})`,
 			`rotateZ(${new Random(id).angle({ diff: rotateZ.degree, base: 0 })})`,
 		].join(' ');
 	}
