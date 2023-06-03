@@ -1,4 +1,7 @@
 <script>
+	import '$lib/assets/fonts/kcc-jeongbeom/style.css';
+	import '$lib/assets/fonts/nanum-square-neo/style.css';
+	import 'modern-normalize';
 	import AnimalList from '$lib/components/AnimalList.svelte';
 
 	export let data;
@@ -6,21 +9,6 @@
 
 <svelte:head>
 	<link rel="preconnect" href="https://cdn.jsdelivr.net" />
-	<link
-		rel="stylesheet"
-		href="https://cdn.jsdelivr.net/gh/fonts-archive/NanumSquareNeo/NanumSquareNeo.css"
-		type="text/css"
-	/>
-	<link
-		rel="stylesheet"
-		href="https://cdn.jsdelivr.net/gh/fonts-archive/KCCJeongbeom/KCCJeongbeom.css"
-		type="text/css"
-	/>
-	<link
-		rel="stylesheet"
-		href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"
-		type="text/css"
-	/>
 </svelte:head>
 
 <main style:background-color={data.backgroundColor}>
@@ -51,5 +39,9 @@
 	:root,
 	main {
 		overflow-x: hidden;
+	}
+
+	:global(*) {
+		box-sizing: initial;
 	}
 </style>
