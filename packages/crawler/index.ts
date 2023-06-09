@@ -11,7 +11,7 @@ async function crawl(request?: Request) {
 	if (result === undefined) {
 		return;
 	}
-	crawl({
+	await crawl({
 		page: result.next.page,
 		size: result.next.size,
 		totalCount: result.totalCount,
