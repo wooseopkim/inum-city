@@ -1,5 +1,6 @@
 import type { Paginator } from './Paginator';
 import { publicApiKey } from './env';
+import retry from './retry';
 
 export type PublicApiResponse = {
 	response:
@@ -37,5 +38,14 @@ export async function fetchAnimalList({ page, size }: Paginator) {
 	searchParams.set('pageNo', String(page));
 	searchParams.set('numOfRows', String(Math.min(size, MAX_SIZE)));
 	searchParams.set('_type', 'json');
-	return await fetch(url);
+	return await retry(() => fetch(url), generateFetchAnimalListDelays);
+}
+
+function* generateFetchAnimalListDelays() {
+	const second = 1 * 1000;
+	const minute = 60 * second;
+	yield 1 * second;
+	yield 1 * minute;
+	yield 10 * minute;
+	return 0;
 }
