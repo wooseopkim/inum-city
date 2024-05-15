@@ -9,24 +9,8 @@ module.exports = {
 		'prettier',
 	],
 	parser: '@typescript-eslint/parser',
-	plugins: ['@nx', 'import'],
+	plugins: ['import'],
 	rules: {
-		'@nx/enforce-module-boundaries': [
-			'error',
-			{
-				allow: [],
-				depConstraints: [
-					{
-						sourceTag: 'scope:web',
-						onlyDependOnLibsWithTags: ['scope:shared', 'scope:web'],
-					},
-					{
-						sourceTag: 'scope:crawler',
-						onlyDependOnLibsWithTags: ['scope:shared', 'scope:crawler'],
-					},
-				],
-			},
-		],
 		'import/order': 'error',
 	},
 	settings: {

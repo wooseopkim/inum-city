@@ -1,13 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-set +e
-UNFORMATTED=$(nx format:check --uncomitted --parallel)
-EXIT_CODE=$?
-set -e
-
-if [ -n "$UNFORMATTED" ]; then
-  nx format:write --files="$UNFORMATTED" --parallel
-fi
-
-exit $EXIT_CODE
+npm run format --workspaces
