@@ -5,8 +5,9 @@
 
 	export let after: AnimalRecord | undefined = undefined;
 	export let size = 10;
+	export let query: string | undefined = undefined;
 
-	const page = loadAnimalPage({ size, after });
+	const page = loadAnimalPage({ size, after, pred: query });
 </script>
 
 {#await page}

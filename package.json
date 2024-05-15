@@ -12,6 +12,7 @@
 		"husky": "^8.0.3",
 		"modern-normalize": "^2.0.0",
 		"prettier": "2.8.8",
+		"supabase": "^1.167.4",
 		"typescript": "^5.0.4"
 	},
 	"scripts": {
