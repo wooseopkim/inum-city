@@ -7,7 +7,7 @@ export default function addIntersectionListener(
 	if (typeof IntersectionObserver === 'undefined') {
 		return;
 	}
-	if (target === undefined) {
+	if (!target) {
 		return;
 	}
 	const observer = new IntersectionObserver((entries) => {

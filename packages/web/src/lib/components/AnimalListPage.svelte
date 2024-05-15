@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PostgrestResponse } from '@supabase/supabase-js';
-	import { createEventDispatcher } from 'svelte';
+	import { afterUpdate, createEventDispatcher } from 'svelte';
 	import Item from './AnimalItem.svelte';
 	import type { AnimalRecord } from '$lib/db/AnimalRecord';
 	import addIntersectionListener from '$lib/dom/listeners';
@@ -12,8 +12,18 @@
 	$: ({ data, error } = response);
 
 	const dispatch = createEventDispatcher<{
-		loadrequest: AnimalRecord;
+		loadrequest: AnimalRecord | null;
 	}>();
+
+	afterUpdate(() => {
+		if (data?.length) {
+			return;
+		}
+		if (error) {
+			return;
+		}
+		dispatch('loadrequest', null);
+	});
 
 	let lastElement: HTMLElement;
 	$: addIntersectionListener(lastElement, (observer) => {

@@ -2,37 +2,51 @@
 	import type { PostgrestResponse } from '@supabase/supabase-js';
 	import AnimalAutoListPage from './AnimalAutoListPage.svelte';
 	import AnimalListPage from './AnimalListPage.svelte';
-	import type { AnimalRecord } from '$lib/db/AnimalRecord';
 	import SearchInput from './SearchInput.svelte';
+	import type { AnimalRecord } from '$lib/db/AnimalRecord';
 
 	export let initialResponse: PostgrestResponse<AnimalRecord>;
+	export let query: string | undefined = undefined;
 
-	let searchQuery: string | undefined = undefined;
-	let pages: { after: AnimalRecord }[];
-	$: {
-		console.log(searchQuery);
-		pages = [];
+	const dummyResponse: PostgrestResponse<AnimalRecord> = {
+		data: [],
+		error: null,
+	} as unknown as PostgrestResponse<AnimalRecord>;
+
+	type Page = { after: AnimalRecord | null; query: string | null };
+
+	let pages: Page[] = [];
+
+	function onLoadRequest(data: AnimalRecord | null) {
+		if (data === null && pages.length > 0) {
+			return;
+		}
+		pages = [...pages, { after: data, query: query ?? null }];
 	}
 
-	function onLoadRequest(data: AnimalRecord) {
-		const concatenated = [
-			...pages,
-			{
-				after: data,
-			},
-		];
-		pages = [...new Set(concatenated)];
-	}
-
-	function onQueryChange(query: string) {
-		searchQuery = query;
+	let pid: ReturnType<typeof setTimeout> | undefined = undefined;
+	function onSearch(value: string) {
+		clearTimeout(pid);
+		pid = setTimeout(() => {
+			if (query !== value) {
+				pages = [];
+			}
+			query = value;
+		}, 500);
 	}
 </script>
 
-<SearchInput on:search={(e) => onQueryChange(e.detail)} />
-<AnimalListPage response={initialResponse} on:loadrequest={(e) => onLoadRequest(e.detail)} />
+<SearchInput on:search={(e) => onSearch(e.detail)} />
+<AnimalListPage
+	response={query ? dummyResponse : initialResponse}
+	on:loadrequest={(e) => onLoadRequest(e.detail)}
+/>
 {#each pages as { after }}
-	{#key after.body.desertionNo}
-		<AnimalAutoListPage query={searchQuery} {after} on:loadrequest={(e) => onLoadRequest(e.detail)} />
+	{#key after?.body?.desertionNo ?? 0}
+		<AnimalAutoListPage
+			{query}
+			after={after ?? undefined}
+			on:loadrequest={(e) => onLoadRequest(e.detail)}
+		/>
 	{/key}
 {/each}

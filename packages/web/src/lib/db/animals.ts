@@ -17,7 +17,7 @@ type LoadParams = Paginator<AnimalRecord> & {
 export function loadAnimalPage({ size, after, pred }: LoadParams): FilterBuilder {
 	const base =
 		typeof pred === 'string'
-			? supabase.rpc('search_animals', { query: pred })
+			? supabase.rpc('search_animals', { queries: buildQueryArray(pred) })
 			: supabase.from('animals').select<string, AnimalRecord>();
 
 	const filtered = typeof pred === 'function' ? pred(base) : base;
@@ -33,4 +33,16 @@ export function loadAnimalPage({ size, after, pred }: LoadParams): FilterBuilder
 	return sorted
 		.lte('body->>happenDt', after.body.happenDt)
 		.lt('body->>desertionNo', after.body.desertionNo);
+}
+
+function buildQueryArray(query: string): string[] {
+	return query
+		.trim()
+		.split(/\s+/)
+		.map((x) => x.trim())
+		.filter(Boolean)
+		.map((x) => x.replaceAll('(', '\\\\('))
+		.map((x) => x.replaceAll(')', '\\\\)'))
+		.map((x) => x.replaceAll('"', '\\"'))
+		.map((x) => x.replaceAll("'", "''"));
 }

@@ -1,20 +1,36 @@
 <script lang="ts">
-	import { createEventDispatcher } from "svelte";
+	import { createEventDispatcher } from 'svelte';
+
+	let content = '';
 
 	const dispatch = createEventDispatcher<{
 		search: string;
 	}>();
 
-  function onChange(e: KeyboardEvent) {
-    const target = e.target as HTMLInputElement | null;
-    dispatch('search', target?.value ?? undefined);
-  }
+	function onChange(e: KeyboardEvent) {
+		const target = e.target as HTMLInputElement | null;
+		dispatch('search', target?.value ?? undefined);
+	}
 </script>
 
-<input on:keydown={onChange}>
+<input
+	on:keyup={onChange}
+	placeholder="🔎 동물 친구를 찾아보세요!"
+	bind:value={content}
+	class:cursive={content.length > 0}
+/>
 
 <style>
-  input {
-    width: 100%;
-  }
+	input {
+		width: 26rem;
+		font-size: 2rem;
+		margin-top: 2rem;
+		margin-bottom: 2rem;
+		padding: 1rem;
+	}
+
+	input:focus::placeholder {
+		display: none;
+		opacity: 0;
+	}
 </style>
