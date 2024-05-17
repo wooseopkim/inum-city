@@ -23,11 +23,11 @@
 		"packages/*"
 	],
 	"lint-staged": {
-		"packages/web/*.{js,jsx,ts,tsx,svelte}": [
+		"packages/web/**/*.{js,jsx,ts,tsx,svelte}": [
 			"npm run check --workspace=web",
 			"npm run format --workspace=web"
 		],
-		"packages/crawler/*.{js,jsx,ts,tsx,svelte}": [
+		"packages/crawler/**/*.{js,jsx,ts,tsx,svelte}": [
 			"npm run check --workspace=crawler",
 			"npm run format --workspace=crawler"
 		]
