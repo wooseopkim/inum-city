@@ -22,5 +22,7 @@ jobs:
           version: 1.0.0
 
       - run: supabase link --project-ref "$SUPABASE_PROJECT_ID"
+        env:
+          SUPABASE_PROJECT_ID: ${{ vars.SUPABASE_PROJECT_ID }}
 
       - run: supabase db push
