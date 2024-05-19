@@ -14,7 +14,7 @@
 </script>
 
 <main style:background-color={data.backgroundColor}>
-	<AnimalList size={5} />
+	<AnimalList size={data.size} />
 </main>
 
 <style>

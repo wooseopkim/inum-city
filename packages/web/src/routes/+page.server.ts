@@ -4,7 +4,8 @@ import { Random } from '$lib/ui/random';
 const MINUTE_IN_MILLIS = 1000 * 60;
 
 export async function load() {
-	const initialData = await loadAnimalPage({ size: 5 });
+	const size = 5;
+	const initialData = await loadAnimalPage({ size });
 
 	const seed = Math.floor(Date.now() / MINUTE_IN_MILLIS);
 	const random = new Random(seed);
@@ -20,6 +21,7 @@ export async function load() {
 		error: initialData.error,
 	} as const;
 	return {
+		size,
 		firstPage,
 		backgroundColor,
 	};
