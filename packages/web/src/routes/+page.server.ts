@@ -13,8 +13,14 @@ export async function load() {
 		diff: 32,
 	});
 
+	const firstPage = {
+		id: '',
+		loading: false,
+		content: initialData.data,
+		error: initialData.error,
+	} as const;
 	return {
-		initialData,
+		firstPage,
 		backgroundColor,
 	};
 }

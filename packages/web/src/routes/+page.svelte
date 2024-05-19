@@ -2,13 +2,19 @@
 	import '$lib/assets/fonts/kcc-jeongbeom/style.css';
 	import '$lib/assets/fonts/nanum-square-neo/style.css';
 	import 'modern-normalize';
+	import { onMount } from 'svelte';
 	import AnimalList from '$lib/components/AnimalList.svelte';
+	import pages from '$lib/store/animalPages';
 
 	export let data;
+
+	onMount(() => {
+		pages.set([data.firstPage]);
+	});
 </script>
 
 <main style:background-color={data.backgroundColor}>
-	<AnimalList initialResponse={data.initialData} />
+	<AnimalList size={5} />
 </main>
 
 <style>

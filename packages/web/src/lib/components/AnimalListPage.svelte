@@ -1,49 +1,24 @@
 <script lang="ts">
-	import type { PostgrestResponse } from '@supabase/supabase-js';
-	import { afterUpdate, createEventDispatcher } from 'svelte';
-	import Item from './AnimalItem.svelte';
+	import type { PostgrestError } from '@supabase/supabase-js';
+	import Error from './AnimalListPage/Error.svelte';
+	import Loading from './AnimalListPage/Loading.svelte';
+	import List from './AnimalListPage/List.svelte';
+	import type { AnimalPage } from '$lib/store/animalPages';
 	import type { AnimalRecord } from '$lib/db/AnimalRecord';
-	import addIntersectionListener from '$lib/dom/listeners';
-	import { AnimalItem } from '$lib/models/AnimalItem';
 
-	export let response: PostgrestResponse<AnimalRecord>;
-	let data: (typeof response)['data'];
-	let error: (typeof response)['error'];
-	$: ({ data, error } = response);
+	export let data: AnimalPage;
+	export let error: PostgrestError | null = null;
+	let content: AnimalRecord[];
 
-	const dispatch = createEventDispatcher<{
-		loadrequest: AnimalRecord | null;
-	}>();
-
-	afterUpdate(() => {
-		if (data?.length) {
-			return;
-		}
-		if (error) {
-			return;
-		}
-		dispatch('loadrequest', null);
-	});
-
-	let lastElement: HTMLElement;
-	$: addIntersectionListener(lastElement, (observer) => {
-		dispatch('loadrequest', data?.[data.length - 1]);
-		observer.unobserve(lastElement);
-	});
+	$: if (!data.loading && !error) {
+		content = data.content!;
+	}
 </script>
 
-{#if error === null && data !== null}
-	{#each data as { body }, i}
-		{@const item = new AnimalItem(body)}
-		{#key body.desertionNo}
-			{#if i === data.length - 2}
-				<Item data={item} />
-				<div bind:this={lastElement} />
-			{:else}
-				<Item data={item} />
-			{/if}
-		{/key}
-	{/each}
+{#if error}
+	<Error value={error} />
+{:else if data.loading}
+	<Loading />
 {:else}
-	<div style:color="orange">{JSON.stringify(error)}</div>
+	<List {content} on:loadrequest />
 {/if}
