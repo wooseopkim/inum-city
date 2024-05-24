@@ -1,6 +1,16 @@
 {
-	"editor.tabSize": 2,
 	"editor.codeActionsOnSave": {
-		"source.fixAll": "explicit"
+		"source.organizeImports": "always",
+		"source.fixAll": "always"
+	},
+	"eslint.options": {
+		"overrideConfigFile": "./.eslintrc.cjs"
+	},
+	"eslint.format.enable": true,
+	"[javascript]": {
+		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
 	}
 }
