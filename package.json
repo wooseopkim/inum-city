@@ -31,5 +31,8 @@
 			"npm run check --workspace=crawler",
 			"npm run format --workspace=crawler"
 		]
+	},
+	"volta": {
+		"node": "20.13.1"
 	}
 }
